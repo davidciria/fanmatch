@@ -1,0 +1,46 @@
+{
+    "scene": {
+        "characters": [
+            {
+                "name": "char",
+                "scale": 0.35,
+                "mesh": "data/export.wbin",
+                "texture": "data/skaterMaleA.png",
+                "anim_name": "idle" 
+            }
+        ],
+        "objects": [
+            {
+                "name": "floor",
+                "color": [0.7, 0.7, 0.7, 1],
+                "mesh": "planeXZ",
+                "scale": 10,
+                "textures_color": "data/grid.png",
+                "flags": []
+            },
+            {
+                "name": "room",
+                "mesh": "data/room.obj",
+                "textures_color": "data/room.png",
+                "flags": [
+                    "two_sided"
+                ]
+            },
+            {
+                "name": "sphere",
+                "mesh": "sphere",
+                "scale": 0.05,
+                "layers": 2,
+                "flags": []
+            }
+        ],
+        "walk_area": [
+            {
+                "id": 0,
+                "init_point": [-1.8,0.1,-0.8],
+                "width": 3.6,
+                "depth": 1.6
+            }
+        ]
+    }
+}
