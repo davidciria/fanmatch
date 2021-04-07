@@ -12,10 +12,11 @@
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
+    <!-- Utils -->
+    <script type="text/javascript" src="utils.js"></script>
 </head>
 
 <body class="vh-100 vw-100">
-
     <div id="ve_page" style="display:none">
         <canvas width="500" height="500"></canvas>
     </div>
@@ -74,9 +75,9 @@
                         <label for="join_room_name" class="my-1">Room name:</label>
                         <input type="text" id="join_room_name" name="join_room_name" value="" class="form-control"
                             required autocomplete="new-password">
-                        <label for="join_room_scode" class="my-1">Secret Code:</label>
+                        <!-- <label for="join_room_scode" class="my-1">Secret Code:</label>
                         <input type="password" id="join_room_scode" name="join_room_scode" value="" class="form-control"
-                            required autocomplete="new-password">
+                            required autocomplete="new-password"> -->
                         <input type="submit" value="Join" class="btn btn-dark my-3">
                     </form>
                 </div>
@@ -91,13 +92,19 @@
                         <label for="create_room_name" class="my-1">Room name:</label>
                         <input type="text" id="create_room_name" name="create_room_name" value="" class="form-control"
                             required autocomplete="new-password">
-                        <label for="create_room_scode" class="my-1">Secret Code:</label>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" value="" id="create_room_private">
+                            <label class="form-check-label" for="flexCheckDefault">Private room</label>
+                        </div>
+                        <label for="create_room_scode" class="my-1" id="create_room_scode_label" style="display: none;">Secret Code:</label>
                         <input type="password" id="create_room_scode" name="create_room_scode" value=""
-                            class="form-control" required autocomplete="new-password">
+                            class="form-control" autocomplete="new-password" style="display: none;">
                         <input type="submit" value="Create" class="btn btn-light my-3">
                     </form>
                 </div>
             </div>
+
+            <script type="text/javascript" src="create_room_form.js"></script>
             <!-- End Create room area -->
         </div>
     </div>

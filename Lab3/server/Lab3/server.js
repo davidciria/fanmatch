@@ -30,7 +30,8 @@ var server = http.createServer( function(request, response) {
         console.log(data);
 
         if (data != null){
-            response.end(data);
+            if(typeof(data) == 'object') response.end(JSON.stringify(data));
+            else response.end(data);
         }else{
             response.end("");
         }

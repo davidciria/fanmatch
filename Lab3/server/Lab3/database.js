@@ -5,6 +5,7 @@ const util = require('util');
 var redis_namespace = "davanDB:";
 var md5 = require('md5');
 var rnd_string = "·IRHBDA^D*^QÑD*Q^WDÑ·?$L!$*^!Ñ=?%Y·M$%OHMPOB POpoponadspfinwei)·$=?)umñnaskfnaldkfjp)opfienwoeh($h"
+var default_scene_json = require('./default_scene.json');
 
 var DB = {
     redis: null,
@@ -50,8 +51,13 @@ var DB = {
         }
 
         //Store password and username.
-        this.redis.set(redis_namespace + 'users:' + email + ":user_info", user_info);
-        this.redis.set(redis_namespace + 'indexes_tables:users:username_email:' + username, email);
+        try{
+            await this.redis.set(redis_namespace + 'users:' + email + ":user_info", user_info);
+            await this.redis.set(redis_namespace + 'indexes_tables:users:username_email:' + username, email);
+        }catch (e) {
+            console.error(e);
+            return "false";
+        }
 
         return "User successful registered";
     },
@@ -106,7 +112,6 @@ var DB = {
         return "false";
     },
     passwordRecoveryNewPassword: async function(code, newPassword){
-        console.log(newPassword);
         var result = await this.tokenManager.validateRecoveryToken(code);
         var email = result.email;
         this.tokenManager.deleteRecoveryToken(code); //Ivalidate recovery token, because we are changing the password.
@@ -132,21 +137,71 @@ var DB = {
             user_info = JSON.stringify(user_info);
 
             //Update user password.
-            this.redis.set(redis_namespace + 'users:' + email + ":user_info", user_info);
+            try{
+                await this.redis.set(redis_namespace + 'users:' + email + ":user_info", user_info);
+            }catch (e) {
+                console.error(e);
+                return "false";
+            }
 
             return "true";
 
         }
 
         return "false";
+    },
+    createDefaultRoom: async function(email, room_name, secret_code=""){
+
+        //Verify if the room already exists.
+        try {
+            const db_room_info = await this.redis.get(redis_namespace + 'rooms:' + room_name);
+            if (db_room_info) { //Username already in use.
+                return {error: "The room name already exists"};
+            }
+        } catch (e) {
+            console.error(e);
+            return {error: e};
+        }
+
+        var user_info;
+        console.log(email);
+        try {
+            user_info = await this.redis.get(redis_namespace + 'users:' + email + ':user_info');
+            user_info = JSON.parse(user_info);
+            if (!user_info) return {error: "Cannot find the user"};
+        } catch (e) {
+            console.error(e);
+            return e;
+        }
+
+        var room_info = {
+            owner: user_info["username"],
+            room_name: room_name,
+            secret_code: secret_code
+        }
+
+        var default_scene = JSON.parse(JSON.stringify(default_scene_json));
+
+        default_scene.room_info = room_info;
+
+        //Create room in the DB.
+        try {
+            await this.redis.set(redis_namespace + 'rooms:' + room_name, JSON.stringify(default_scene));
+        } catch (e) {
+            console.error(e);
+            return {error: e};
+        }
+
+        return {};
     }
 }
 
 var client = DB.redis = redis.createClient();
 client.get = util.promisify(client.get);
+client.set = util.promisify(client.set);
 
 client.on('connect', function () {
-    console.log('connected');
+    console.log('Redis database connected successful');
 });
 
 module.exports = DB;

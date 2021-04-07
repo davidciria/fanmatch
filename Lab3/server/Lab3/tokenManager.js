@@ -17,11 +17,12 @@ function TokenManager(){
         return code;
     }
     
-    this.generateToken = function(username){
+    this.generateToken = function(email){
         const payload = {
-            username: username,
+            email: email,
             //check:  true
         };
+        console.log("payload generated", payload);
         const token = jwt.sign(payload, llave, {
             expiresIn: expiresTime
         });
@@ -53,8 +54,8 @@ function TokenManager(){
                     console.log("Invalid token");
                     result = false;    
                 } else { 
-                    console.log(decoded);
-                    result = true;
+                    console.log("payload validated", decoded);
+                    result = decoded;
                 }
             });
             return result;

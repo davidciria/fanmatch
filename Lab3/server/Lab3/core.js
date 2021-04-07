@@ -29,7 +29,7 @@ var CORE = {
                 const server_res = await DB.loginUser(login_parameters);
                 switch(server_res){
                     case true:
-                        var token = this.tokenManager.generateToken(login_parameters["username"]);
+                        var token = this.tokenManager.generateToken(login_parameters["log_email"]);
                         return "Correct password:" + token; //Correct password.
                         break;
                     case false:
@@ -47,7 +47,8 @@ var CORE = {
             case "/validateToken":
                 var token = request.body;
                 var isValid = await this.tokenManager.validateToken(token);
-                return isValid.toString();
+                if(isValid) return "true";
+                return "false";
                 break;
             case "/passwordRecovery":
                 var email = request.body;
@@ -61,6 +62,22 @@ var CORE = {
                 var new_pass_info =  JSON.parse(request.body);
                 return await DB.passwordRecoveryNewPassword(new_pass_info.code, new_pass_info.new_password);
                 break;
+            case "/createRoom":
+                var response = {};
+                
+                var info = JSON.parse(request.body);
+                var token = info.token;
+                var room_name = info.room_name;
+                var secret_code = info.secret_code;
+                var payload = await this.tokenManager.validateToken(token);
+                console.log("Payload: ");
+                console.log(payload);
+                if(!payload){
+                    response.error = "Invalid token";
+                    return response;
+                }
+                var user_email = payload.email;
+                return await DB.createDefaultRoom(user_email, room_name, secret_code);
         }
 
     },

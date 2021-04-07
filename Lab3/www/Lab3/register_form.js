@@ -61,7 +61,7 @@ register_form.addEventListener('submit', function(event){
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(register_parameters)
-    }).then(response=>response.text())
-    .then(data=>{ window.alert(data); })
-    .catch(err => window.alert(err));
+    }).then(handleErrors)
+    .then(response=>response.text())
+    .then(data=>{ window.alert(data); }).catch(err => window.alert("The server is closed."));
 });
