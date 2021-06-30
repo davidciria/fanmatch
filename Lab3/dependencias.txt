@@ -1,3 +1,0 @@
-jsonwebtoken
-
-nodemailer

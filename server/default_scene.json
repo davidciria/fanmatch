@@ -1,0 +1,35 @@
+{
+    "scene": {
+        "objects": [
+            {
+                "name": "floor",
+                "color": [0.7, 0.7, 0.7, 1],
+                "mesh": "planeXZ",
+                "scale": 8,
+                "position": [0, 0.001, -1],
+                "textures_color": "data/grid.png",
+                "flags": []
+            },
+            {
+                "name": "room",
+                "mesh": "data/room.obj",
+                "scale": [2,1,4],
+                "textures_color": "data/room_designs/room1.png",
+                "flags": [
+                    "two_sided"
+                ]
+            }
+        ],
+        "walk_area":
+        {
+            "shapes": [
+                [
+                    [-3.7, 0, -3.7],
+                    [3.7, 0, -3.7],
+                    [3.7, 0, 3.7],
+                    [-3.7, 0, 3.7]
+                ]
+            ]
+        }
+    }
+}

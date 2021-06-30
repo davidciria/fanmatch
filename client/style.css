@@ -1,0 +1,4 @@
+/*Style file: index.html*/
+.form-control{
+    border-width: 3px; /*Increase a little bit the border size of form inputs*/
+}
